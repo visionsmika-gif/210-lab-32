@@ -50,7 +50,7 @@ int main() {
 			cars.back().print();
 		}
 
-		// After each time period, display the queue
+		// After each time period, display the queue.
 		printCars(cars);
 		++time;
 	}
