@@ -1,3 +1,6 @@
+// COMSC-210 | Lab 32 | Mika Aquino
+// IDE used: Visual Studio 2022
+
 #include "Car.h"
 #include <iostream>
 #include <deque>
@@ -8,17 +11,8 @@ using namespace std;
 
 const int INITIAL_SIZE = 2;
 
-void printCars(const deque<Car> cars) {
-	cout << "Queue:\n";
-	if (cars.empty()) {
-		cout << "\tEmpty\n";
-		return;
-	}
-	for (Car car : cars) {
-		cout << "\t";
-		car.print();
-	}
-}
+// Function to print a deque of cars.
+void printCars(const deque<Car> cars);
 
 int main() {
 	srand(time(0));
@@ -37,24 +31,23 @@ int main() {
 	int time = 1;
 	// Run a loop until the deque is empty.
 	while (!cars.empty()) {
-		bool somethingHappened = false;
-
-		// 55% probability that the car at the head of the line pays its toll and leaves the toll booth
+		cout << "\n";
+		// 55% probability that the car at the head of the line pays its toll and leaves the toll booth.
 		int probability = rand() % 100 + 1;
 		if (probability <= 55) {
 			cout << "Time: " << time << " Operation: Car paid: ";
 			cars.front().print();
 			cars.pop_front();
-			somethingHappened = true;
 		}
 
-		// 45% probability that another car joins the line for the doll booth
-		probability = rand() % 100 + 1;
-		if (probability <= 45) {
+		// 45% probability that another car joins the line for the doll booth.
+		// The 'else' branch accounts for the chance that the probability was > 55 (accounting for the other 45 numbers out of 100)
+		// NOTE: I assumed that only one operation could happen per cycle because the sample output never shows two operations happening
+		// in the same cycle, so I used an if-else branch.
+		else {
 			cars.push_back(Car());
 			cout << "Time: " << time << " Operation: Joined lane: ";
 			cars.back().print();
-			somethingHappened = true;
 		}
 
 		// After each time period, display the queue
@@ -63,4 +56,19 @@ int main() {
 	}
 
 	return 0;
+}
+
+// Function to print a deque of cars.
+// Args:	deque of Car objects
+// Returns:	void
+void printCars(const deque<Car> cars) {
+	cout << "Queue:\n";
+	if (cars.empty()) {
+		cout << "\tEmpty\n";
+		return;
+	}
+	for (Car car : cars) {
+		cout << "\t";
+		car.print();
+	}
 }
