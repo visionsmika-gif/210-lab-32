@@ -8,6 +8,16 @@ using namespace std;
 
 const int INITIAL_SIZE = 2;
 
+void printCars(const deque<Car> cars) {
+	if (cars.empty()) {
+		cout << "Empty\n";
+		return;
+	}
+	for (Car car : cars) {
+		car.print();
+	}
+}
+
 int main() {
 	srand(time(0));
 
@@ -22,6 +32,28 @@ int main() {
 		cars.at(i).print();
 	}
 
+	int time = 1;
+	while (!cars.empty()) {
+		// 55% probability that the car at the head of the line pays its toll and leaves the toll booth
+		int probability = rand() % 100 + 1;
+		if (probability <= 55) {
+			cout << "Time: " << time << " Operation: Car paid: ";
+			cars.front().print();
+			cars.pop_front();
+		}
+
+		// 45% probability that another car joins the line for the doll booth
+		probability = rand() % 100 + 1;
+		if (probability <= 45) {
+			cars.push_back(Car());
+			cout << "Time: " << time << " Operation: Joined lane: ";
+			cars.back().print();
+		}
+
+		printCars(cars);
+
+		++time;
+	}
 
 	return 0;
 }
