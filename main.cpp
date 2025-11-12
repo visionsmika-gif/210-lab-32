@@ -33,11 +33,11 @@ int main() {
 		}
 	}
 
+	// Test operations to print array to make sure array of deques is working
 	for (int i = 0; i < NUM_LANES; ++i) {
-
-		for (int j = 0; j < lanes[i].size(); ++i) {
+		for (int j = 0; j < lanes[i].size(); ++j) {
 			lanes[i].at(j).print();
-			cout << 
+			cout << "\n";
 		}
 	}
 
