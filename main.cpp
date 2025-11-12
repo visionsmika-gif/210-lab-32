@@ -6,10 +6,12 @@
 #include <deque>
 #include <cstdlib>
 #include <ctime>
+#include <array>
 
 using namespace std;
 
 const int INITIAL_SIZE = 2;
+const int NUM_LANES = 4;
 
 // Function to print a deque of cars.
 void printCars(const deque<Car> cars);
@@ -17,17 +19,30 @@ void printCars(const deque<Car> cars);
 int main() {
 	srand(time(0));
 
-	// Declare a deque of cars.
-	deque<Car> cars;
+	// Declare an array containing lanes.
+	array<deque<Car>, NUM_LANES> lanes;
 
 	// Initialize deque with 2 cars.
 	cout << "Initial queue:\n";
-	for (int i = 0; i < INITIAL_SIZE; ++i) {
-		cars.push_back(Car());
-		cout << "\t";
-		cars.at(i).print();
+	for (int i = 0; i < NUM_LANES; ++i) {
+		cout << "Lane " << i + 1 << "\n";
+		for (int j = 0; j < INITIAL_SIZE; ++j) {
+			lanes[i].push_back(Car());
+			cout << "\t";
+			lanes[i].at(j).print();
+		}
 	}
 
+	for (int i = 0; i < NUM_LANES; ++i) {
+
+		for (int j = 0; j < lanes[i].size(); ++i) {
+			lanes[i].at(j).print();
+			cout << 
+		}
+	}
+
+
+	/*
 	int time = 1;
 	// Run a loop until the deque is empty.
 	while (!cars.empty()) {
@@ -54,6 +69,7 @@ int main() {
 		printCars(cars);
 		++time;
 	}
+	*/
 
 	return 0;
 }
