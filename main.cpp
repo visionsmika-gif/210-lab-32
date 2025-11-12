@@ -14,7 +14,7 @@ const int INITIAL_SIZE = 2;
 const int NUM_LANES = 4;
 
 // Function to print a deque of cars.
-void printCars(const deque<Car> cars);
+void printCars(array<deque<Car>, NUM_LANES> lanes);
 
 int main() {
 	srand(time(0));
@@ -33,14 +33,8 @@ int main() {
 		}
 	}
 
-	// Test operations to print array to make sure array of deques is working
-	for (int i = 0; i < NUM_LANES; ++i) {
-		for (int j = 0; j < lanes[i].size(); ++j) {
-			lanes[i].at(j).print();
-			cout << "\n";
-		}
-	}
-
+	cout << "\nOutput the current deque status per the sample output\n";
+	printCars(lanes);
 
 	/*
 	int time = 1;
@@ -74,17 +68,23 @@ int main() {
 	return 0;
 }
 
-// Function to print a deque of cars.
-// Args:	deque of Car objects
+// Function to print an array of car lanes, where each lane is a deque of Cars.
+// Args:	an array of deques of Cars
 // Returns:	void
-void printCars(const deque<Car> cars) {
-	cout << "Queue:\n";
-	if (cars.empty()) {
-		cout << "\tEmpty\n";
-		return;
-	}
-	for (Car car : cars) {
-		cout << "\t";
-		car.print();
+void printCars(array<deque<Car>, NUM_LANES> lanes) {
+	// Loop to go through each lane
+	for (int i = 0; i < NUM_LANES; ++i) {
+		cout << "Lane " << i + 1 << " Queue\n";
+		// If the current lane is empty, print "Empty"
+		if (lanes[i].empty()) {
+			cout << "\tEmpty\n";
+		}
+		// Else, go through the lane and print each car
+		else {
+			for (int j = 0; j < lanes[i].size(); ++j) {
+				cout << "\t";
+				lanes[i].at(j).print();
+			}
+		}
 	}
 }
