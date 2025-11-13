@@ -14,7 +14,7 @@ const int INITIAL_SIZE = 2;
 const int NUM_LANES = 4;
 const int NUM_SIMS = 20;
 
-const int PROB_PAY = 46;
+const int PROB_PAY = 50;
 const int PROB_JOIN = 39;
 const int PROB_SHIFT = 15;
 
@@ -40,15 +40,21 @@ int main() {
 
 	// Run the simulation a number of times.
 	for (int time = 0; time < NUM_SIMS; ++time) {
-		cout << "Time: " << time + 1 << "\n";
+		cout << "\nTime: " << time + 1 << "\n";
 
 		for (int i = 0; i < NUM_LANES; ++i) {
-			// 46% probability that the car at the head of the queue pays its toll and leaves the queue
+			// 50% probability that the car at the head of the queue pays its toll and leaves the queue
 			int probability = rand() % 100 + 1;
-			if (probability <= PROB_PAY) {
+			if (probability <= PROB_PAY && !lanes[i].empty()) {
 				cout << "Lane " << i + 1 << " Paid: ";
-				
-				
+				lanes[i].front().print();
+				lanes[i].pop_front();
+			}
+			// 50% probability that another car joins the queue
+			else {
+				lanes[i].push_back(Car());
+				cout << "Lane " << i + 1 << " Joined: ";
+				lanes[i].front().print();
 			}
 
 
@@ -77,6 +83,8 @@ int main() {
 			++time;
 			*/
 		}
+
+		printCars(lanes);
 	}
 
 	return 0;
