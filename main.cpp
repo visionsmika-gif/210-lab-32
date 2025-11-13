@@ -43,64 +43,45 @@ int main() {
 		cout << "\nTime: " << time + 1 << "\n";
 
 		for (int i = 0; i < NUM_LANES; ++i) {
-			// 46% probability that the car at the head of the queue pays its toll and leaves the queue
+
+			// TODO: If a lane is currently empty but there is still more time in the simulation, those probabilities will be just 50/50 if a new car enters the queue or not. 
+
+
+			// 46% probability that the car at the head of the queue pays its toll and leaves the queue.
 			int probability = rand() % 100 + 1;
 			if (probability <= PROB_PAY && !lanes[i].empty()) {
 				cout << "Lane " << i + 1 << " Paid: ";
 				lanes[i].front().print();
 				lanes[i].pop_front();
 			}
-			// 39% probability that another car joins the queue
+			// 39% probability that another car joins the queue.
 			else if (probability <= PROB_PAY + PROB_JOIN) {
 				lanes[i].push_back(Car());
 				cout << "Lane " << i + 1 << " Joined: ";
 				lanes[i].back().print();
 			}
-			// 15% probability that the rear car will shift lanes
+			// 15% probability that the rear car will shift lanes.
 			else if (!lanes[i].empty()) {
-				// Remove car from current lane
+				// Remove car from current lane.
 				Car shiftingCar = lanes[i].back();
 				lanes[i].pop_back();
 
+				// Print action.
 				cout << "Lane " << i + 1 << " Switched: ";
 				shiftingCar.print();
 
-				// Choose a new lane to enter
+				// Choose a new lane to enter.
 				int newLane;
 				do {
 					newLane = rand() % NUM_LANES;
-				} while (newLane == i);	// Ensure that new lane does not equal current lane
+				} while (newLane == i);	// Ensure that the new lane does not equal the current lane.
 
+				// Add the shifting car to the new lane.
 				lanes[newLane].push_back(shiftingCar);
 			}
-
-
-
-			/*
-			// 55% probability that the car at the head of the line pays its toll and leaves the toll booth.
-			int probability = rand() % 100 + 1;
-			if (probability <= 55) {
-				cout << "Time: " << time << " Operation: Car paid: ";
-				cars.front().print();
-				cars.pop_front();
-			}
-
-			// 45% probability that another car joins the line for the doll booth.
-			// The 'else' branch accounts for the chance that the probability was > 55 (accounting for the other 45 numbers out of 100)
-			// NOTE: I assumed that only one operation could happen per cycle because the sample output never shows two operations happening
-			// in the same cycle, so I used an if-else branch.
-			else {
-				cars.push_back(Car());
-				cout << "Time: " << time << " Operation: Joined lane: ";
-				cars.back().print();
-			}
-
-			// After each time period, display the queue.
-			printCars(cars);
-			++time;
-			*/
 		}
 
+		// After each time period, print the resulting lanes
 		printCars(lanes);
 	}
 
@@ -113,7 +94,7 @@ int main() {
 void printCars(array<deque<Car>, NUM_LANES> lanes) {
 	// Loop to go through each lane
 	for (int i = 0; i < NUM_LANES; ++i) {
-		cout << "Lane " << i + 1 << " Queue\n";
+		cout << "Lane " << i + 1 << " Queue:\n";
 		// If the current lane is empty, print "Empty"
 		if (lanes[i].empty()) {
 			cout << "\tEmpty\n";
