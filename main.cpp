@@ -49,7 +49,6 @@ int main() {
 		cout << "\nTime: " << time + 1 << "\n";
 
 		for (int i = 0; i < NUM_LANES; ++i) {
-
 			// If a lane is empty, there is a 50% chance that a car will join. 
 			if (lanes[i].empty()) {
 				int probability = rand() % 100 + 1;
