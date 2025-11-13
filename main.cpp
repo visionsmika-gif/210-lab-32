@@ -56,39 +56,23 @@ int main() {
 				if (probability <= PROB_EMPTY_JOIN) {
 					carJoins(lanes, i);
 				}
-			}
-			// If a lane is not empty, these events have a chance of happening:
-			else {
-				// 46% probability that the car at the head of the queue pays its toll and leaves the queue.
-				int probability = rand() % 100 + 1;
-				if (probability <= PROB_PAY) {
-					carPays(lanes, i);
-				}
-				// 39% probability that another car joins the queue.
-				else if (probability <= PROB_PAY + PROB_JOIN) {
-					lanes[i].push_back(Car());
-					cout << "Lane " << i + 1 << " Joined: ";
-					lanes[i].back().print();
-				}
-				// 15% probability that the rear car will shift lanes.
 				else {
-					// Remove car from current lane.
-					Car shiftingCar = lanes[i].back();
-					lanes[i].pop_back();
-
-					// Print action.
-					cout << "Lane " << i + 1 << " Switched: ";
-					shiftingCar.print();
-
-					// Choose a new lane to enter.
-					int newLane;
-					do {
-						newLane = rand() % NUM_LANES;
-					} while (newLane == i);	// Ensure that the new lane does not equal the current lane.
-
-					// Add the shifting car to the new lane.
-					lanes[newLane].push_back(shiftingCar);
+					// If a car does not join, skip the following events for this lane, and move on to the next lane.
+					continue;
 				}
+			}
+			// 46% probability that the car at the head of the queue pays its toll and leaves the queue.
+			int probability = rand() % 100 + 1;
+			if (probability <= PROB_PAY) {
+				carPays(lanes, i);
+			}
+			// 39% probability that another car joins the queue.
+			else if (probability <= PROB_PAY + PROB_JOIN) {
+				carJoins(lanes, i);
+			}
+			// 15% probability that the rear car will shift lanes.
+			else {
+				carShifts(lanes, i);
 			}
 		}
 
@@ -120,17 +104,27 @@ void printCars(array<deque<Car>, NUM_LANES> lanes) {
 	}
 }
 
+// Function to have a car join the back of the lane.
+// Args:	an array of deques of Cars, an index for the current lane
+// Returns:	void
 void carJoins(array<deque<Car>, NUM_LANES>& lanes, int i) {
 	lanes[i].push_back(Car());
 	cout << "Lane " << i + 1 << " Joined: ";
 	lanes[i].back().print();
 }
 
+// Function to have a car at the front of the lane pay and leave.
+// Args:	an array of deques of Cars, an index for the current lane
+// Returns:	void
 void carPays(array<deque<Car>, NUM_LANES>& lanes, int i) {
 	cout << "Lane " << i + 1 << " Paid: ";
 	lanes[i].front().print();
 	lanes[i].pop_front();
 }
+
+// Function to have a car at the back of the lane leave and shift to a new lane.
+// Args:	an array of deques of Cars, an index for the current lane
+// Returns:	void
 void carShifts(array<deque<Car>, NUM_LANES>& lanes, int i) {
 	// Remove car from current lane.
 	Car shiftingCar = lanes[i].back();
